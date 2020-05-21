@@ -1,39 +1,17 @@
 from keras.layers import Input, Dense
-from keras.models import Model
+from keras.models import Model, Sequential
 from keras.datasets import mnist
 from matplotlib import pyplot as plt
 import numpy as np
 import random
 
 def main():
-	# size of encoded representation
-	encoding_dim = 32
+	# size of encoded representation, aka hidden layer
+	encoding_dim = 10
 
-	# input placeholder
-	input_img = Input(shape=(784,))
-
-	# encoded representation of the input
-	layer = Dense(encoding_dim, activation='relu')
-	encoded = layer(input_img)
-
-	# decoded reconstruction of the input
-	layer = Dense(784, activation='sigmoid')
-	decoded = layer(encoded)
-
-	# this model maps an input to its reconstruction
-	autoencoder = Model(input_img, decoded)
-
-	# -----------------
-
-	# encoder model
-	encoder = Model(input_img, encoded)
-
-	# -----------------
-
-	# decoder model
-	encoded_input = Input(shape=(encoding_dim,))
-	decoder_layer = autoencoder.layers[-1] # last layer of autoencoder
-	decoder = Model(encoded_input, decoder_layer(encoded_input))
+	autoencoder = Sequential()
+	autoencoder.add(Dense(encoding_dim, input_shape=(784,), activation='relu'))
+	autoencoder.add(Dense(784, activation='sigmoid'))
 
 	# ----------------
 
@@ -50,14 +28,22 @@ def main():
 
 	autoencoder.fit(x_train, x_train, epochs=50, batch_size=256, shuffle=True, validation_data=(x_test, x_test))
 
-	# -----------------
+	autoencoder.save('autoencoder_mnist.hdf5')
+
+	visualise(autoencoder, x_test)
 	
+
+
+def visualise(autoencoder, x_test):
+	'''
+	Autoencoder is the model and x_test is the input
+	'''
+
 	# visualise the results
 	random.shuffle(x_test)
-	encoded_imgs = encoder.predict(x_test)
-	decoded_imgs = decoder.predict(encoded_imgs)
+	decoded_imgs = autoencoder.predict(x_test)
 
-	n = 30  # how many digits we will display
+	n = 10  # how many digits we will display
 	plt.figure(figsize=(20, 4))
 	for i in range(n):
 		# display original
