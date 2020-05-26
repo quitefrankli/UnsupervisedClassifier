@@ -49,6 +49,7 @@ def main():
 	# centroids = kmeans(data=encoded, n_clusters=10)
 
 	# now visualise the clusters using tsne
+
 	tsne_model = TSNE(n_components=2, verbose=1, n_iter=300)
 	n = 5000
 	x = x_train[:n]
@@ -58,7 +59,7 @@ def main():
 		tsne_results[:, 0], tsne_results[:, 1],
 		alpha=0.5,
 	)
-	
+
 	# fig = plt.figure()
 	# ax = fig.add_subplot(111, projection='3d')
 	# p = ax.scatter(
