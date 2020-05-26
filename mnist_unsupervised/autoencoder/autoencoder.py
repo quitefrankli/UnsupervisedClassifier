@@ -25,44 +25,49 @@ def main():
 	x_test = x_test.astype('float32')/255.0
 	x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:]))) # flattens into vector of vectors of size 784
 
-	model_file_name = 'autoencoder_mnist.hdf5'
-	try:
-		autoencoder = load_model(model_file_name)
-	except OSError: # perhaps file does not exist
-		print('File not found, creating new file')
-		autoencoder = generate_model(x_train, x_test)
-		autoencoder.save(model_file_name)
+	# model_file_name = 'autoencoder_mnist.hdf5'
+	# try:
+	# 	autoencoder = load_model(model_file_name)
+	# except OSError: # perhaps file does not exist
+	# 	print('File not found, creating new file')
+	# 	autoencoder = generate_model(x_train, x_test)
+	# 	autoencoder.save(model_file_name)
 
-	# ----------------
-	# to get the output of the hidden layer ie. the encoded layer we duplicate the same model but truncated
-	encoder = Sequential()
-	encoder.add(autoencoder.layers[0])
+	# # ----------------
+	# # to get the output of the hidden layer ie. the encoded layer we duplicate the same model but truncated
+	# encoder = Sequential()
+	# encoder.add(autoencoder.layers[0])
 	
-	# random_seed = random.randint(0, 1e6)
-	# random.Random(random_seed).shuffle(x_test)
-	# random.Random(random_seed).shuffle(y_test)
+	# # random_seed = random.randint(0, 1e6)
+	# # random.Random(random_seed).shuffle(x_test)
+	# # random.Random(random_seed).shuffle(y_test)
 
 
-	# use kmeans clustering find real value
-	encoded = encoder.predict(x_train)
-	print(encoded.shape)
-	centroids = kmeans(data=encoded, n_clusters=10)
+	# # use kmeans clustering find real value
+	# encoded = encoder.predict(x_train)
+	# print(encoded.shape)
+	# centroids = kmeans(data=encoded, n_clusters=10)
 
 	# now visualise the clusters using tsne
-	tsne_model = TSNE(n_components=3, verbose=1, n_iter=300)
+	tsne_model = TSNE(n_components=2, verbose=1, n_iter=300)
 	n = 5000
 	x = x_train[:n]
 	y = y_train[:n]
 	tsne_results = tsne_model.fit_transform(x)
-	fig = plt.figure()
-	ax = fig.add_subplot(111, projection='3d')
-	p = ax.scatter(
-		tsne_results[:, 0], tsne_results[:, 1], tsne_results[:, 2], 
+	plt.scatter(
+		tsne_results[:, 0], tsne_results[:, 1],
 		alpha=0.5, cmap=plt.cm.get_cmap('Spectral', 10),
 		c=y
 	)
-	plt.axis('off')
-	fig.colorbar(p)
+	# fig = plt.figure()
+	# ax = fig.add_subplot(111, projection='3d')
+	# p = ax.scatter(
+	# 	tsne_results[:, 0], tsne_results[:, 1], tsne_results[:, 2], 
+	# 	alpha=0.5, cmap=plt.cm.get_cmap('Spectral', 10),
+	# 	c=y
+	# )
+	# plt.axis('off')
+	# fig.colorbar(p)
 	plt.show()
 
 	return
