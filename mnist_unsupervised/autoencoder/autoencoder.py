@@ -56,9 +56,9 @@ def main():
 	tsne_results = tsne_model.fit_transform(x)
 	plt.scatter(
 		tsne_results[:, 0], tsne_results[:, 1],
-		alpha=0.5, cmap=plt.cm.get_cmap('Spectral', 10),
-		c=y
+		alpha=0.5,
 	)
+	
 	# fig = plt.figure()
 	# ax = fig.add_subplot(111, projection='3d')
 	# p = ax.scatter(
