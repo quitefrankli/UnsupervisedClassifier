@@ -32,42 +32,8 @@ def kmeans(data, n_clusters):
 	rows = 10
 	cols = 1
 	centroids = estimator.cluster_centers_
+
 	return centroids
-	images = centroids.reshape(n_clusters, rows, cols)
-	images = (images*255).astype(np.uint8)
-
-	# create figure with subplots
-	fig, axs = plt.subplots(cols, rows, figsize=(15, 10))
-
-	# plt.gray()
-
-	# loop through subplots and add centroid images
-	for i, ax in enumerate(axs.flat):
-		# determine infered label using cluster_labels dictionary
-		# for key, value in cluster_labels.items():
-		# 	if i in value:
-		# 		ax.set_title('Inferred Labels: {}'.format(key))
-
-		# add image to subplot
-		ind = np.argpartition(estimator.cluster_centers_[i], -3)[-3:]
-		print(ind)
-		ax.matshow(images[i])
-		ax.axis('off')
-
-	plt.show()
-
-def visualise_centroids(centroids):
-	# first find distance between groups
-	distances = np.array([]).reshape([len(centroids), len(centroids)-1])
-	print(distances.shape())
-	return
-	for i in range(len(centroids)):
-		for j in range(len(centroids)):
-			centroidA = centroids[i]
-			centroidB = centroids[j]
-
-
-
 
 def calculate_metrics(estimator, data):
     # Calculate and print metrics

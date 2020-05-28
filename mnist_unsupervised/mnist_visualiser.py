@@ -6,6 +6,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # disables extranneous logging
 from keras.datasets import mnist
 
 from sklearn.manifold import TSNE
+from sklearn.decomposition import PCA
 
 from matplotlib import pyplot as plt
 import numpy as np
@@ -23,9 +24,16 @@ def main():
 	x_test = x_test.astype('float32')/255.0
 	x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:]))) # flattens into vector of vectors of size 784
 
-	n = 1000
+	n = 60000
 	x = x_train[:n]
 	y = y_train[:n]
+
+	# use pca to reduce dimensionality to 50
+	print('Using PCA to reduce dimensionality...')
+	pca = PCA(n_components=50)
+	x = pca.fit_transform(x)
+
+	print('Calculating TSNE...')
 	tsne_visualiser = TSNE_Visualiser(x, y)
 	tsne_visualiser.visualise()
 
@@ -35,6 +43,11 @@ class TSNE_Visualiser():
 		self.y = y
 		self.fig = plt.figure(figsize=(12, 12))
 		self.n_expected_clusters = 10
+		self.perplexity = 50
+		self.max_iter = 2000
+		self.early_exag_coeff = 12
+		self.stop_lying_iter = 1000
+		self.n_iter = 500
 
 	def visualise(self):
 		self.visualise_2d()
@@ -42,7 +55,9 @@ class TSNE_Visualiser():
 		plt.show()
 
 	def visualise_2d(self):
-		tsne = TSNE(n_components=2, n_iter=300)
+		tsne = TSNE(
+			n_components=2, perplexity=self.perplexity, n_iter=self.n_iter, 
+		)
 		tsne_results = tsne.fit_transform(self.x)
 
 		# no color
@@ -63,7 +78,9 @@ class TSNE_Visualiser():
 		plt.axis('off')
 
 	def visualise_3d(self):
-		tsne = TSNE(n_components=3, n_iter=300)
+		tsne = TSNE(
+			n_components=3, perplexity=self.perplexity, n_iter=self.n_iter
+		)
 		tsne_results = tsne.fit_transform(self.x)
 
 		# no color
