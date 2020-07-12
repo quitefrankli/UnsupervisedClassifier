@@ -17,4 +17,8 @@ ax = fig.add_subplot(111, projection='3d')
 ax.scatter(projected[:, 0], projected[:, 1], projected[:, 2], c=digits.target, alpha=0.5, cmap=plt.cm.get_cmap('Spectral', 10))
 plt.axis('off')
 
-plt.show()
+# rotate the axes and update
+for angle in range(0, 360):
+    ax.view_init(30, angle)
+    plt.draw()
+    plt.pause(.001)

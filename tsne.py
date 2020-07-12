@@ -21,6 +21,10 @@ p = ax.scatter(tsne_results[:, 0], tsne_results[:, 1], tsne_results[:, 2], c=dig
 plt.axis('off')
 fig.colorbar(p)
 
-plt.show()
+# rotate the axes and update
+for angle in range(0, 360):
+    ax.view_init(30, angle)
+    plt.draw()
+    plt.pause(.001)
 
 

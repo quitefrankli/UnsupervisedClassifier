@@ -2,8 +2,8 @@
 
 # white list
 !.gitignore
-!.README.md
-
+!README.md
+!*.gif
 !*/
 !*.py
 
