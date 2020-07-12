@@ -33,7 +33,7 @@ def kmeans(data, n_clusters):
 	cols = 1
 	centroids = estimator.cluster_centers_
 
-	return centroids
+	return estimator
 
 def calculate_metrics(estimator, data):
     # Calculate and print metrics

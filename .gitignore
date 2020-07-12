@@ -1,3 +1,11 @@
-output
-__pycache__
-autoencoder_mnist.hdf5
+*
+
+# white list
+!.gitignore
+!.README.md
+
+!*/
+!*.py
+
+# black list
+ignore_me/
